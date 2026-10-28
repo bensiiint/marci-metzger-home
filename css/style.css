@@ -305,6 +305,12 @@ select:focus, input:focus, textarea:focus { outline: none; border-bottom-color: 
 }
 .gallery figure:hover figcaption::after { opacity: 1; transform: none; }
 
+/* Affiliations: a quiet trust-mark band, not a full section, so it gets a
+   lighter padding than .section rather than the usual heading + copy — but
+   still enough air that it doesn't read as cramped against its border lines.
+   (.badges itself already centers, from its footer-era styling below.) */
+.affiliations { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+
 /* Contact */
 .contact { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2.5rem, 6vw, 6rem); align-items: start; }
 .contact-info h2 { font-size: clamp(2.4rem, 5vw, 4rem); }
@@ -326,17 +332,31 @@ address a { color: var(--brass); text-decoration: none; }
 .wordmark {
   font-family: var(--serif);
   font-weight: 500;
-  font-size: clamp(3rem, 18vw, 16rem);
-  line-height: 0.8;
+  /* "Marci Metzger" in this font measures ~5.75x its font-size in pixels
+     (measured directly, not guessed). 13vw keeps that comfortably inside the
+     viewport width at every size from the mobile breakpoint upward, so it
+     stays on one line instead of wrapping whenever it happens not to fit. */
+  font-size: clamp(3rem, 13vw, 16rem);
+  white-space: nowrap;
+  line-height: 0.95;
   text-align: center;
   color: var(--cream);
   opacity: 0.08;
   margin: 0;
-  white-space: nowrap;
+  padding-inline: 1rem;
 }
-.footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; padding-block: 2.5rem; }
-.badges { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
+/* Three rows (badges, socials, copyright), always centered and stacked. A
+   space-between row worked fine with two items, but socials made it three,
+   and there's no good way to lay three unequal-width things across one row
+   at every screen size. Stacking sidesteps that instead of fighting it. */
+.footer-inner { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; padding-block: 2.5rem; text-align: center; }
+.badges { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: clamp(2.5rem, 10vw, 9rem); }
 .badges img { height: 52px; width: auto; border-radius: 8px; }
+
+.socials { display: flex; align-items: center; gap: 1.25rem; }
+.socials a { color: var(--cream-dim); line-height: 0; transition: color 0.3s ease; }
+.socials a:hover { color: var(--brass); }
+.socials svg { width: 20px; height: 20px; }
 .copyright { font-size: 0.78rem; color: var(--cream-dim); margin: 0; }
 
 /* ---------- Motion ----------
@@ -444,4 +464,14 @@ address a { color: var(--brass); text-decoration: none; }
   .search { gap: 1rem; }
   .search label { flex-basis: 100%; }
   .search .btn { width: 100%; }
+
+  /* The search card nearly fills the hero's height on a phone, so the
+     "Scroll" hint ended up squeezed right under it with no breathing room.
+     It's a desktop nicety, not something a touchscreen visitor needs. */
+  .scroll-hint { display: none; }
+
+  /* Below this breakpoint, 13vw is too small to read as a statement piece,
+     and the full name no longer needs to fit on one line anyway. Let it wrap
+     to two lines instead, sized up to fill the extra vertical room that gives. */
+  .wordmark { white-space: normal; font-size: clamp(3rem, 20vw, 7rem); }
 }
